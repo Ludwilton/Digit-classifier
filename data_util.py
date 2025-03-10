@@ -12,8 +12,8 @@ import numpy as np
 import os
 
 
-MODEL_PATH = '/Users/luddecmc/Desktop/SKOLARBETE-ITHS/repos/Digit-classifier/knn_model.pkl'
-NN_MODEL_PATH = '/Users/luddecmc/Desktop/SKOLARBETE-ITHS/repos/Digit-classifier/nn_model.keras'
+MODEL_PATH = './knn_model.pkl'
+NN_MODEL_PATH = './nn_model.keras'
 
 os.makedirs('debug_plots', exist_ok=True)
 
@@ -38,7 +38,7 @@ def knn_model():
     try:
         model = joblib.load(MODEL_PATH)
     except FileNotFoundError:
-        X_train, y_train  = load_and_process_mnist()
+        X_train, y_train, _, _  = load_and_process_mnist()
         model = KNeighborsClassifier(n_neighbors=2)
         model.fit(X_train, y_train)
         joblib.dump(model, MODEL_PATH)
