@@ -1,5 +1,8 @@
 # import matplotlib
 # matplotlib.use('Agg') # matplotlib must be run on main thread, workaround for debugging
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # suppress tensorflow warnings
+
 
 from tensorflow import keras
 from sklearn.neighbors import KNeighborsClassifier
@@ -14,6 +17,8 @@ import os
 
 MODEL_PATH = './knn_model.pkl'
 NN_MODEL_PATH = './nn_model.keras'
+_nn_model = None
+
 
 os.makedirs('debug_plots', exist_ok=True)
 
@@ -25,14 +30,17 @@ def load_and_process_mnist():
 
 
 def load_neural_network_model():
+    global _nn_model
+    if _nn_model is not None:
+        return _nn_model
+        
     try:
-        model = keras.models.load_model(NN_MODEL_PATH)
+        _nn_model = keras.models.load_model(NN_MODEL_PATH)
         print("Loaded neural network model")
-        return model
+        return _nn_model
     except:
         print("Error loading neural network model. Please ensure it has been trained and saved.")
         return None
-
 
 def knn_model():
     try:
@@ -116,21 +124,36 @@ def image_preprocessing(image, model_type='knn'):
     return processed_image
 
 
+def print_model_data(processed_image):
+        print(f"shape {processed_image.shape}")
+        print("Image as 28x28 grid:")
+        reshaped = processed_image.reshape(28, 28)
+        print("     " + " ".join(f"{i:3d}" for i in range(28)))
+        print("    " + "-" * 84)
+        for i, row in enumerate(reshaped):
+            print(f"{i:2d} | " + " ".join(f"{int(val):3d}" for val in row))
+
+
 def predict_image(image, model_type='knn'):
     processed_image = image_preprocessing(image, model_type)
 
-    print(f"1{processed_image.shape}")
     if model_type == 'knn':
+        
         model = knn_model()
         predicted_digit = model.predict(processed_image)
+        print_model_data(processed_image)
+        print(f"KNN prediction: {predicted_digit[0]}")
 
     elif model_type == 'nn':
         model = load_neural_network_model()
         predictions = model.predict(processed_image)
+        print("Neural Network predictions:")
+        for i, prob in enumerate(predictions[0]):
+            print(f"  Digit {i}: {prob:.4f}")
         predicted_digit = np.argmax(predictions, axis=1)
     
     processed_image = image_preprocessing(image, "knn") # for plotting
-    print(f"2{processed_image.shape}")
+
     return predicted_digit, processed_image
 
 
