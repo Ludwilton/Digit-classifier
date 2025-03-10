@@ -1,5 +1,5 @@
 # Digit Classifier
-
+![classifier image](assets/classifier.png)
 A simple web application that lets you draw digits and see how different machine learning models recognize them. Built as a learning project to explore image recognition techniques.
 
 ## About
