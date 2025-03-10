@@ -126,7 +126,7 @@ def image_preprocessing(image, model_type='knn'):
 
 def print_model_data(processed_image):
         print(f"shape {processed_image.shape}")
-        print("Image as 28x28 grid:")
+        print("Array data as 28x28 grid:")
         reshaped = processed_image.reshape(28, 28)
         print("     " + " ".join(f"{i:3d}" for i in range(28)))
         print("    " + "-" * 84)
