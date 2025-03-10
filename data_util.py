@@ -126,12 +126,12 @@ def image_preprocessing(image, model_type='knn'):
 
 def print_model_data(processed_image):
         print(f"shape {processed_image.shape}")
-        print("Array data as 28x28 grid:")
+        print("Processed image data array (0-255) 28x28 grid:")
         reshaped = processed_image.reshape(28, 28)
-        print("     " + " ".join(f"{i:3d}" for i in range(28)))
+        print("     " + " ".join(f"{i:3d}" for i in range(1,29)))
         print("    " + "-" * 84)
         for i, row in enumerate(reshaped):
-            print(f"{i:2d} | " + " ".join(f"{int(val):3d}" for val in row))
+            print(f"{i+1:2d} | " + " ".join(f"{int(val):3d}" for val in row))
 
 
 def predict_image(image, model_type='knn'):
