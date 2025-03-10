@@ -161,6 +161,7 @@ def create_plot(left_image=None, right_image=None, nn_image=None, left_title="In
     '''
     Plots the original image, KNN prediction, and NN prediction
     If empty images are passed, white images are created
+    heavily enforced styling to match the rest of the app
     '''
     
     if knn_prediction is not None:
@@ -177,6 +178,18 @@ def create_plot(left_image=None, right_image=None, nn_image=None, left_title="In
 
     if left_image is None:
         left_image = white
+    else: # ??
+        # Ensure left_image is properly shaped and scaled
+        if left_image.ndim > 2:
+            # If it has more than 2 dimensions, take the first channel
+            left_image = left_image[:, :, 0]
+        
+        # Resize to match the other images if needed
+        if left_image.shape != (28, 28):
+            left_image = resize(left_image, (28, 28))
+            # Scale to 0-255 range if it's in 0-1 range
+            if left_image.max() <= 1.0:
+                left_image = (left_image * 255).astype(np.uint8)
     
     if right_image is None:
         right_image = white
@@ -184,7 +197,7 @@ def create_plot(left_image=None, right_image=None, nn_image=None, left_title="In
     if nn_image is None:
         nn_image = white
     
-    # Input image
+    # Input image 
     fig.add_trace(go.Heatmap(
         z=np.flipud(left_image), 
         colorscale='gray', 
@@ -211,27 +224,94 @@ def create_plot(left_image=None, right_image=None, nn_image=None, left_title="In
         zmax=255
     ), row=1, col=3)
 
-
     fig.update_layout(
         height=400,
         width=1000,
         showlegend=False,
         margin=dict(l=20, r=20, t=60, b=20),
+        paper_bgcolor="#4d4d6a",
+        plot_bgcolor="#4d4d6a",
+        font=dict(
+            family="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",  
+            size=14,
+            color="#f8f9fa"
+        ),
+        title_font=dict(
+            family="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            size=16,
+            color="#f8f9fa"
+        )
     )
     
-    for col in range(1, 4):
-        fig.update_xaxes(showticklabels=False, row=1, col=col)
-        fig.update_yaxes(showticklabels=False, row=1, col=col)
-        
 
-    fig.update_xaxes(constrain='domain', scaleanchor="y", scaleratio=1, row=1, col=1)
-    fig.update_yaxes(constrain='domain', scaleanchor="x", scaleratio=1, row=1, col=1)
-    
-    fig.update_xaxes(constrain='domain', scaleanchor="y2", scaleratio=1, row=1, col=2)
-    fig.update_yaxes(constrain='domain', scaleanchor="x2", scaleratio=1, row=1, col=2)
-    
-    fig.update_xaxes(constrain='domain', scaleanchor="y3", scaleratio=1, row=1, col=3)
-    fig.update_yaxes(constrain='domain', scaleanchor="x3", scaleratio=1, row=1, col=3)
+    for col in range(1, 4):
+        fig.update_xaxes(
+            showticklabels=False, 
+            row=1, 
+            col=col,
+            showgrid=False,
+            zeroline=False,
+            showline=False,
+            linecolor="#4d4d6a"
+        )
+        fig.update_yaxes(
+            showticklabels=False, 
+            row=1, 
+            col=col,
+            showgrid=False,  
+            zeroline=False,
+            showline=False,
+            linecolor="#4d4d6a"
+        )
+
+
+    for i in fig['layout']['annotations']:
+        i['font'] = dict(
+            family="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            size=20,
+            color="#f8f9fa"  
+        )
+        i['y'] = 1.1  
+
+
+    fig.update_layout( # force styling on plots
+        height=300,
+        autosize=True,
+        yaxis=dict(
+            scaleanchor='x', 
+            scaleratio=1,
+            linecolor="#4d4d6a",
+            mirror=False
+        ),
+        yaxis2=dict(
+            scaleanchor='x2', 
+            scaleratio=1,
+            linecolor="#4d4d6a",
+            mirror=False
+        ),
+        yaxis3=dict(
+            scaleanchor='x3', 
+            scaleratio=1,
+            linecolor="#4d4d6a",
+            mirror=False
+        ),
+        xaxis=dict(
+            linecolor="#4d4d6a",
+            mirror=False
+        ),
+        xaxis2=dict(
+            linecolor="#4d4d6a",
+            mirror=False
+        ),
+        xaxis3=dict(
+            linecolor="#4d4d6a",
+            mirror=False
+        ),
+        uniformtext=dict(
+            minsize=14,
+            mode='hide'
+        )
+    )
     
     return fig
 

@@ -39,10 +39,9 @@ class Layout:
                             "display": "flex",
                             "justifyContent": "center",
                             "alignItems": "center",
-                            "border": "0.5px solid #dee2e6",
-                            "backgroundColor": "white",
-                            "width": f"{self.canvas_size}px",
-                            "height": f"{self.canvas_size-50}px",
+                            "backgroundColor": "#4d4d6a",
+                            "width": f"{self.canvas_size+10}px",
+                            "height": f"{self.canvas_size-34}px",
                             "margin": "0 auto",
                             "padding": "0",
                             "overflow": "hidden"
@@ -66,11 +65,11 @@ class Layout:
                                 id="prediction-plot", 
                                 figure=create_plot(),
                                 config={'displayModeBar': False},
-                                style={'width': '100%', 'height': '400px'},
+                                style={'width': '100%', 'height': '110%'},
                                 className="mx-auto"
                             )
                         ], style={
-                            "border": "2px solid #dee2e6",
+                            # "border": "2px solid #dee2e6",
                         })
                     ], className="d-flex flex-column align-items-center")
                 ], width=12, md=8, lg=6, className="mx-auto")

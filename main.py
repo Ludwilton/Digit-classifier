@@ -8,6 +8,11 @@ import json
 from plotly.subplots import make_subplots
 from dash_canvas.utils import parse_jsonstring
 
+external_stylesheets = [
+    dbc.themes.BOOTSTRAP,
+    "/assets/styles.css"
+]
+
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP], title="Handwritten digits classifier")
 canvas_size = 300
 server = app.server
