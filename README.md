@@ -2,14 +2,14 @@
 
 A simple web application that lets you draw digits and see how different machine learning models recognize them. Built as a learning project to explore image recognition techniques.
 
-## About This Project
+## About
 
 This app demonstrates machine learning concepts by comparing:
 - K-Nearest Neighbors algorithm (traditional ML)
 - Neural Network approach (deep learning)
-- work in progress
+- ...work in progress
 
-Both models are trained on the MNIST dataset.
+All models are trained on the MNIST dataset.
 
 ## Features
 
@@ -46,6 +46,9 @@ python main.py
 ## Project structure
 
 main.py - The application entry point
+
 layout.py - UI components
+
 data_util.py - Image processing and prediction functions
+
 neural_network.ipynb - Training notebook
